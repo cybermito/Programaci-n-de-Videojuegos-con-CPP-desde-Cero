@@ -1,0 +1,20 @@
+# Este archivo es para definir como construir, enlazar y compilar todo el proyecto.
+
+# 1. Decimos cuál es la versión mínima de CMake (el contructor)
+cmake_minimum_required(VERSION 3.10)
+
+# 2. Damos nombre al proyecto e indicamos la versión.
+project(Laberinto VERSION 0.1.0)
+
+# 3. ¡IMPORTANTE! Aquí fijamos el estándar moderno (C++20)
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# 4. Le decimos a C++ dónde están los "manuales de instrucciones", el archivo .hpp
+include_directories(include)
+
+# 5. Creamos el programa final uniendo el jefe con sus ayudantes
+add_excutables(LaberintoGame
+    main.cpp
+    src/Player.cpp
+)
