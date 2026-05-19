@@ -1,7 +1,7 @@
 #pragma once //Evita que la cabecera sea llamada más de una vez en la misma sesión de ejecución.
 
-#ifndef PLAYER_H
-#define PLAYER_H
+#ifndef PLAYER_HPP
+#define PLAYER_HPP
 
 class Player
 {
@@ -16,4 +16,4 @@ class Player
         void callInput();
 };
 
-#endif //PLAYER_H
+#endif //PLAYER_HPP

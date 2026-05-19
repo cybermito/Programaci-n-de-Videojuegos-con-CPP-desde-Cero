@@ -924,7 +924,7 @@ Solo debemos añadir el siguiente código para importar (o incluir) estos nuevos
 
 ```cpp
 
-#include "NombreDeNuestroArchivo.hpp"
+#include "NombreDeNuestroArchivo.hpp" //si está en otra carpeta, debemos añadir la ruta relativa a nuestro proyecto
 
 ```
 
@@ -942,6 +942,87 @@ class Player
 ```
 
 El destructor se llama automáticamente cuando un objeto de la clase es destruido, lo que puede ocurrir cuando el programa termina o cuando el objeto sale del alcance. El destructor se utiliza para liberar recursos que el objeto pueda haber adquirido durante su vida útil, como memoria dinámica o archivos abiertos.
+
+En resumen, tenemos que crear una estructura de archivos organizada para nuestro proyecto, utilizando archivos de encabezado para declarar nuestras clases y archivos de código fuente para definir su comportamiento. Además, debemos implementar constructores y destructores en nuestras clases para gestionar adecuadamente la creación y destrucción de objetos, asegurando que los recursos se manejen de manera eficiente a lo largo del ciclo de vida de nuestros objetos en el juego.
+
+La estructura de archivos para nuestro proyecto de juego de laberinto podría verse así:
+
+```txt
+
+- include/
+  - Player.hpp
+  - Map.hpp
+  - Enemy.hpp
+- src/
+  - Player.cpp
+  - Map.cpp
+  - Enemy.cpp
+- output/
+- CMakeLists.txt
+- main.cpp
+
+```
+
+Estos archivos y carpetas nos ayudarán a organizar nuestro código de manera eficiente, permitiéndonos desarrollar nuestro juego de laberinto de forma estructurada y mantenible.
+
+archivo de encabezado (Player.hpp):
+
+```cpp
+    #pragma once //Evita que la cabecera sea llamada más de una vez en la misma sesión de ejecución.
+
+    #ifndef PLAYER_HPP
+    #define PLAYER_HPP
+
+    class Player
+    {
+        private:
+
+        protected:
+
+        public:
+            Player(); //Constructor
+            //virtual ~Player(); //Destructor, lo comentamos temporalmente.
+
+            void callInput();
+    };
+
+    #endif //PLAYER_HPP
+```
+
+archivo de código fuente (Player.cpp):
+
+```cpp
+    #include <iostream>
+    #include "../include/Player.hpp"
+
+    Player::Player(/* args */) //Definición del constructor
+    {
+    }
+
+    /*Player::~Player() //Definición del destructor
+    {
+    }*/
+
+    void Player::callInput(){
+        std::cout << "LLamada a la función callInput()"<< std::endl;
+    }
+```
+
+archivo principal (main.cpp):
+
+```cpp
+    #include <iostream>
+    #include "include/Player.hpp" //Incluimos la librería de cabecera donde definimos
+    //nuestras propias clases. Hay que indicar la ruta completa del archivo si no está
+    //en el mismo nivel que main.cpp
+
+    int main(){
+        Player hero;
+
+        hero.callInput();
+        return 0;
+    }
+```
 
 ### Controles básicos de movimiento en videojuegos con programación en C++
 
