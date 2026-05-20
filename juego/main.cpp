@@ -24,8 +24,15 @@ indicar como se van a usar.
 //en el mismo nivel que main.cpp
 
 int main(){
+    bool isGameOver = false;
     Player hero;
 
-    hero.callInput();
+    std::cout << "¡Comienza el juego!" << std::endl;
+    /* Creamos el game loop */
+    while(!isGameOver){
+        //Aquí va todo el bucle del juego
+        hero.callInput();
+    }
+
     return 0;
 }

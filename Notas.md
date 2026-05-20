@@ -1026,6 +1026,113 @@ archivo principal (main.cpp):
 
 ### Controles básicos de movimiento en videojuegos con programación en C++
 
+Creamos un juego de laberinto en C++ donde el jugador puede moverse utilizando las teclas de dirección. Para esto, implementamos una función que captura la entrada del usuario y actualiza la posición del jugador en el mapa. Utilizamos un ciclo para mantener el juego activo y permitir múltiples movimientos hasta que el jugador decida salir.
+
+En el archivo Player.hpp declaramos las variables x e y para representar la posición del jugador en el mapa, así como un método callInput() para manejar la entrada del usuario. En el archivo Player.cpp, definimos el constructor para inicializar la posición del jugador y el método callInput() para capturar la entrada del usuario y actualizar la posición en consecuencia. En el archivo main.cpp, creamos una instancia de la clase Player y llamamos al método callInput() para iniciar el proceso de movimiento del jugador.
+
+Para esto usamos un ciclo while que se ejecuta continuamente, solicitando al usuario que ingrese una dirección de movimiento (izquierda, derecha, arriba o abajo) o la opción de salir. Según la entrada del usuario, actualizamos las coordenadas del jugador y dibujamos el mapa con la nueva posición del jugador. El juego continuará activo hasta que el usuario decida salir (aún no implementado).
+
+Archivo Player.hpp:
+
+```cpp
+#pragma once //Evita que la cabecera sea llamada más de una vez en la misma sesión de ejecución.
+
+#ifndef PLAYER_HPP
+#define PLAYER_HPP
+
+class Player
+{
+    private:
+
+    protected:
+        //Movimiento del juegador
+        int x, y;
+
+    public:
+        Player(); //Constructor
+        //virtual ~Player(); //Destructor, lo comentamos temporalmente.
+
+        void callInput();
+};
+
+#endif //PLAYER_HPP
+```
+
+Archivo Player.cpp:
+
+```cpp
+#include <iostream>
+#include "../include/Player.hpp"
+
+Player::Player(/* args */){//Definición del constructor
+    x = 1;
+    y = 1;
+}
+
+/*Player::~Player() //Definición del destructor
+{
+}*/
+
+void Player::callInput(){
+    /* Comentamos esta línea ya que era por motivos de pruebas.
+    std::cout << "LLamada a la función callInput()"<< std::endl;
+    */
+   /* Vamos a crear el movimiento del jugador */
+   char userInput = ' ';
+
+   std::cin >> userInput;
+
+   switch (userInput){
+
+    case 'w':
+        y++;
+        std::cout << "El jugador se mueve arriba." << std::endl;
+        break;
+    case 's':
+        y--;
+        std::cout << "El jugador se mueve abajo." << std::endl;
+        break;
+    case 'a':
+        x--;
+        std::cout << "El jugador se mueve izquierda." << std::endl;
+        break;
+    case 'd':
+        x++;
+        std::cout << "El jugador se mueve derecha." << std::endl;
+        break;
+    default:
+
+        break;
+    }
+    /* Fin control entrada teclado movimiento */
+    /* Visualizamos las coordenadas del jugador */
+    std::cout << "El jugador está en las coordenadas: " << x << ", " << y << std::endl;
+}
+```
+
+Archivo main.cpp:
+
+```cpp
+#include <iostream>
+#include "include/Player.hpp" //Incluimos la librería de cabecera donde definimos
+//nuestras propias clases. Hay que indicar la ruta completa del archivo si no está
+//en el mismo nivel que main.cpp
+
+int main(){
+    bool isGameOver = false;
+    Player hero;
+
+    std::cout << "¡Comienza el juego!" << std::endl;
+    /* Creamos el game loop */
+    while(!isGameOver){
+        //Aquí va todo el bucle del juego
+        hero.callInput();
+    }
+
+    return 0;
+}
+```
+
 ### Creación de Clases para mapas en Juegos de programación
 
 ### Conexión de Jugador y Coordenadas en Mapas de Videojuegos

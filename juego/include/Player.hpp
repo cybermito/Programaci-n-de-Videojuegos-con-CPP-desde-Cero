@@ -8,6 +8,8 @@ class Player
     private:
 
     protected:
+        //Movimiento del juegador
+        int x, y;
         
     public:
         Player(); //Constructor
