@@ -22,6 +22,7 @@ indicar como se van a usar.
 #include "include/Player.hpp" //Incluimos la librería de cabecera donde definimos
 //nuestras propias clases. Hay que indicar la ruta completa del archivo si no está
 //en el mismo nivel que main.cpp
+#include "include/MapCell.hpp" //Para el control de las celdas del mapa
 
 int main(){
     bool isGameOver = false;

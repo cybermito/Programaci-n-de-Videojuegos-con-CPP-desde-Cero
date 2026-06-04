@@ -1135,6 +1135,8 @@ int main(){
 
 ### Creación de Clases para mapas en Juegos de programación
 
+En este reto, vamos a crear una clase para representar el mapa de nuestro juego de laberinto. Esta clase se encargará de almacenar la información del mapa, como las paredes, los caminos y la posición del jugador. Además, implementaremos métodos para dibujar el mapa en la consola y para verificar las colisiones entre el jugador y las paredes.
+
 ### Conexión de Jugador y Coordenadas en Mapas de Videojuegos
 
 ### Carga y Lectura de Archivos para Mapas en Videojuegos con C++
