@@ -1141,12 +1141,137 @@ Creamos los archivos de encabezado y código fuente para la clase Map, donde def
 
 Los archivos creados son los siguientes:
 
-- include/MapCell.hpp: Define la clase MapCell, que representa cada celda del mapa, con atributos para indicar si es una pared o un camino.
+- include/MapCell.hpp: Define la clase MapCell, que representa cada celda del mapa, con atributos para indicar si es una pared o un camino, y métodos para acceder a esta información.
 - include/GameMap.hpp: Define la clase GameMap, que representa el mapa completo del juego, con métodos para cargar el mapa desde un archivo, dibujarlo en la consola y verificar colisiones.
 - src/MapCell.cpp: Implementa los métodos de la clase MapCell.
 - src/GameMap.cpp: Implementa los métodos de la clase GameMap.
 
+Contenido de MapCell.hpp:
+
+```cpp
+/* para manejar cada una de las celdas del mapa */
+#pragma once //Evita que la cabecera sea llamada más de una vez en la misma sesión de ejecución.
+
+#ifndef MAPCELL_HPP
+#define MAPCELL_HPP
+
+/*Cada celda va a tener 3 posibles valores
+    H --> Jugador
+    0 --> Vacia
+    1 --> Pared
+*/
+class MapCell
+{
+    private:
+
+    protected:
+
+    public:
+    MapCell();
+
+    int id;
+
+};
+
+#endif
+```
+
+Contenido de GameMap.hpp:
+
+```cpp
+/* para manejar cada una de las celdas del mapa */
+#pragma once //Evita que la cabecera sea llamada más de una vez en la misma sesión de ejecución.
+
+#ifndef GAMEMAP_HPP
+#define GAMEMAP_HPP
+
+#include "MapCell.hpp" /*Nos servirá para crear un array de celdas de mapa con su come-
+tido cada una */
+
+class GameMap
+{
+    private:
+
+    protected:
+
+    public:
+    GameMap();
+    MapCell cells[15][10]; //Creamos la matriz de celdas previamente definidas
+
+    /*Función que dibjará el map */
+    void DrawMap();
+
+};
+
+#endif //GAMEMAP_HPP
+```
+
+Contenido de MapCell.cpp:
+
+```cpp
+#include "../include/MapCell.hpp"
+
+/*Cada celda va a tener 3 posibles valores
+    H --> Jugador
+    0 --> Vacia
+    1 --> Pared
+*/
+
+MapCell::MapCell(){ //Constructor
+
+    id = 0; //Indica que inicialmente todas las celdas estarán vacías.
+
+}
+
+/*mapCell::~MapCell(){
+
+}*/
+```
+
+Contenido de GameMap.cpp:
+
+```cpp
+#include "../include/GameMap.hpp"
+#include <iostream>
+
+
+GameMap::GameMap(){ //Constructor
+
+}
+
+/*mapCell::~MapCell(){
+    //Destructor
+}*/
+
+void GameMap::DrawMap(){
+    for(int i=0; i < 15; i++){
+
+        for(int p=0; p < 10; p++){
+            std::cout << 0;
+        }
+        std::cout << std::endl;
+    }
+}
+```
+
+Con esta estructura de clases, podemos representar el mapa de nuestro juego de laberinto y manejar la lógica relacionada con la posición del jugador, las paredes y los caminos. A medida que avanzamos en el desarrollo del juego, podemos expandir estas clases para incluir más funcionalidades, como enemigos, tesoros y otros elementos interactivos.
+
+En el main.cpp podemos crear una instancia de GameMap y llamar al método DrawMap para visualizar el mapa en la consola:
+
+```cpp
+#include <iostream>
+#include "include/GameMap.hpp"
+int main(){
+    GameMap myMap;
+    myMap.DrawMap();
+
+    return 0;
+}
+```
+
 ### Conexión de Jugador y Coordenadas en Mapas de Videojuegos
+
+Ahora que tenemos la clase GameMap para representar el mapa de nuestro juego, el siguiente paso es conectar la posición del jugador con las coordenadas del mapa. Para esto, podemos modificar la clase Player para que tenga una referencia al GameMap y actualizar su posición en el mapa cada vez que se mueva.
 
 ### Carga y Lectura de Archivos para Mapas en Videojuegos con C++
 
