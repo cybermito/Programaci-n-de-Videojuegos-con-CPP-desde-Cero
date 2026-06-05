@@ -23,17 +23,20 @@ indicar como se van a usar.
 //nuestras propias clases. Hay que indicar la ruta completa del archivo si no está
 //en el mismo nivel que main.cpp
 #include "include/MapCell.hpp" //Para el control de las celdas del mapa
+#include "include/GameMap.hpp" //Clase generadora de mapas
 
 int main(){
     bool isGameOver = false;
-    Player hero;
+    GameMap map; //Creamos el objeto mapa
+    Player hero; //Creamos el objeto jugador
 
     std::cout << "¡Comienza el juego!" << std::endl;
     /* Creamos el game loop */
     while(!isGameOver){
         //Aquí va todo el bucle del juego
         hero.callInput();
+        map.DrawMap();
     }
 
     return 0;
-}
+} 

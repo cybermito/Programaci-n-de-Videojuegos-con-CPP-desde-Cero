@@ -1137,6 +1137,15 @@ int main(){
 
 En este reto, vamos a crear una clase para representar el mapa de nuestro juego de laberinto. Esta clase se encargará de almacenar la información del mapa, como las paredes, los caminos y la posición del jugador. Además, implementaremos métodos para dibujar el mapa en la consola y para verificar las colisiones entre el jugador y las paredes.
 
+Creamos los archivos de encabezado y código fuente para la clase Map, donde definimos los atributos necesarios para representar el mapa, como un arreglo bidimensional que almacena la estructura del laberinto. También implementamos métodos para cargar el mapa desde un archivo, dibujar el mapa en la consola y verificar las colisiones. En el archivo main.cpp, creamos una instancia de la clase Map y utilizamos sus métodos para mostrar el mapa y manejar las interacciones del jugador con el entorno.
+
+Los archivos creados son los siguientes:
+
+- include/MapCell.hpp: Define la clase MapCell, que representa cada celda del mapa, con atributos para indicar si es una pared o un camino.
+- include/GameMap.hpp: Define la clase GameMap, que representa el mapa completo del juego, con métodos para cargar el mapa desde un archivo, dibujarlo en la consola y verificar colisiones.
+- src/MapCell.cpp: Implementa los métodos de la clase MapCell.
+- src/GameMap.cpp: Implementa los métodos de la clase GameMap.
+
 ### Conexión de Jugador y Coordenadas en Mapas de Videojuegos
 
 ### Carga y Lectura de Archivos para Mapas en Videojuegos con C++

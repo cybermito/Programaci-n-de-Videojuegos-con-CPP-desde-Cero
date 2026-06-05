@@ -17,6 +17,9 @@ class GameMap
     GameMap();
     MapCell cells[15][10]; //Creamos la matriz de celdas previamente definidas
 
+    /*Función que dibjará el map */
+    void DrawMap();
+
 };
 
 #endif
