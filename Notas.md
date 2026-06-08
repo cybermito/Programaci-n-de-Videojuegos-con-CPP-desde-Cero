@@ -1271,7 +1271,137 @@ int main(){
 
 ### Conexión de Jugador y Coordenadas en Mapas de Videojuegos
 
-Ahora que tenemos la clase GameMap para representar el mapa de nuestro juego, el siguiente paso es conectar la posición del jugador con las coordenadas del mapa. Para esto, podemos modificar la clase Player para que tenga una referencia al GameMap y actualizar su posición en el mapa cada vez que se mueva.
+Ahora que tenemos la clase GameMap para representar el mapa de nuestro juego, el siguiente paso es conectar la posición del jugador con las coordenadas del mapa. Pero antes de esto, debemos conectar las celdas de nuestro mapa para el dibujado de este.
+
+En el archivo GameMap.cpp, dentro del método DrawMap, podemos modificar el código para que en lugar de imprimir un 0 para cada celda, verifique el valor de cada celda y dibuje el mapa en consecuencia. Por ejemplo, si la celda tiene un valor de 1, podemos imprimir un símbolo que represente una pared, y si la celda tiene un valor de 0, podemos imprimir un espacio en blanco. Además, si la celda tiene un valor que representa al jugador (por ejemplo, 'H'), podemos imprimir un símbolo que represente al jugador en esa posición.
+
+```cpp
+void GameMap::DrawMap(){
+    for(int i=0; i < 15; i++){
+
+        for(int p=0; p < 10; p++){
+            if(cells[i][p].id == 1){
+                std::cout << "#"; // Representa una pared
+            } else if(cells[i][p].id == 0){
+                std::cout << " "; // Representa un espacio vacío
+            } else if(cells[i][p].id == 'H'){
+                std::cout << "H"; // Representa al jugador
+            }
+        }
+        std::cout << std::endl;
+    }
+}
+```
+
+Con esta implementación, el método DrawMap dibujará el mapa en la consola utilizando diferentes símbolos para representar las paredes, los espacios vacíos y la posición del jugador. A medida que el jugador se mueva por el mapa, podemos actualizar las celdas correspondientes para reflejar su nueva posición y volver a llamar al método DrawMap para mostrar el mapa actualizado. Esto permitirá que el jugador vea su movimiento en el mapa y cómo interactúa con el entorno del juego.
+
+Añadimos un método para actualizar la posición del jugador en el mapa. Este método tomará las coordenadas del jugador y actualizará la celda correspondiente en el mapa para reflejar su nueva posición. Por ejemplo:
+
+En el archivo GameMap.hpp, podemos agregar el siguiente método:
+
+```cpp
+void UpdatePlayerPosition(int x, int y);
+```
+
+En el archivo GameMap.cpp, implementamos este método de la siguiente manera:
+
+```cpp
+void GameMap::UpdatePlayerPosition(int x, int y){
+    // Primero, limpiamos la posición anterior del jugador
+    for(int i=0; i < 15; i++){
+        for(int p=0; p < 10; p++){
+            if(cells[i][p].id == 'H'){
+                cells[i][p].id = 0; // Limpiamos la posición anterior del jugador
+            }
+        }
+    }
+    // Luego, actualizamos la nueva posición del jugador
+    cells[y][x].id = 'H'; // Actualizamos la nueva posición del jugador
+}
+```
+
+En este método, primero recorremos todas las celdas del mapa para encontrar la posición actual del jugador (representada por 'H') y la limpiamos estableciendo su valor a 0. Luego, actualizamos la nueva posición del jugador utilizando las coordenadas proporcionadas (x e y) y establecemos el valor de esa celda a 'H' para indicar la nueva ubicación del jugador en el mapa.
+
+Probamos el método UpdatePlayerPosition en el main.cpp para asegurarnos de que el jugador se mueve correctamente en el mapa:
+
+```cpp
+#include <iostream>
+#include "include/GameMap.hpp"
+#include "include/Player.hpp"
+int main(){
+    GameMap myMap;
+    Player hero;
+
+    // Actualizamos la posición del jugador en el mapa
+    myMap.UpdatePlayerPosition(hero.x, hero.y);
+
+    // Dibujamos el mapa con la posición actualizada del jugador
+    myMap.DrawMap();
+
+    return 0;
+}
+```
+
+#### Otra forma de actualizar la posición del jugador en el mapa con punteros
+
+En el archivo GameMap.hpp, podemos agregar un puntero a MapCell para representar la celda actual del jugador, de esta manera no es necesario recorrer toda la matriz/mapa para saber el contenido de una celda:
+
+```cpp
+    MapCell* PlayerCell; // Puntero a la celda actual del jugador
+```
+
+En el archivo GameMap.cpp, implementamos el método SetPlayerCell() para actualizar la posición del jugador utilizando este puntero:
+
+```cpp
+/*Definición del método SetPlayerCell() para el control de posición del jugador en el mapa y su dibujado */
+void GameMap::SetPlayerCell(int playerX, int playerY){
+    //std::cout << "Las coordenadas del jugador son: " << playerX << ", " << playerY << std::endl;
+    //Comprobamos si la celda está vacía o no para resetearla y repintar el mapa
+    if (PlayerCell != NULL){
+        PlayerCell->id = 0;
+    }
+    PlayerCell = &cells[playerX][playerY]; //Vamos a la dirección de memoria de la posición de la celda para tomar su valor.
+    PlayerCell->id = 'H';
+}
+```
+
+Cómo x e y son atributos de la clase Player que al ser protected, no pueden ser accedidos directamente desde el main.cpp, debemos agregar un método público en la clase Player para obtener las coordenadas del jugador. Por ejemplo:
+
+En el archivo Player.hpp, agregamos el siguiente método:
+
+```cpp
+int getX();
+int getY();
+```
+
+En el archivo Player.cpp, implementamos estos métodos de la siguiente manera:
+
+```cpp
+int Player::getX(){
+    return x; // Devuelve la coordenada X del jugador
+}
+
+int Player::getY(){
+    return y; // Devuelve la coordenada Y del jugador
+}
+```
+
+Con estos métodos, podemos obtener las coordenadas del jugador desde el main.cpp y actualizar su posición en el mapa de la siguiente manera:
+
+```cpp
+#include <iostream>
+#include "include/GameMap.hpp"
+#include "include/Player.hpp"
+int main(){
+    GameMap myMap;
+    Player hero;
+    // Actualizamos la posición del jugador en el mapa utilizando los métodos getX() y getY()
+    myMap.UpdatePlayerPosition(hero.getX(), hero.getY());
+    // Dibujamos el mapa con la posición actualizada del jugador
+    myMap.DrawMap();
+    return 0;
+}
+```
 
 ### Carga y Lectura de Archivos para Mapas en Videojuegos con C++
 
@@ -1412,4 +1542,8 @@ Nota: Si tenemos los archivos fuente en diferentes directorios, debemos especifi
 
 ```bash
     g++ main.cpp ./src/Robot.cpp -o ./output/main
+```
+
+```
+
 ```

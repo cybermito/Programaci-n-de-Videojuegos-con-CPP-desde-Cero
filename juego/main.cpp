@@ -35,6 +35,9 @@ int main(){
     while(!isGameOver){
         //Aquí va todo el bucle del juego
         hero.callInput();
+        //Tomamos la posición del jugador
+        map.SetPlayerCell(hero.getPlayerX(), hero.getPlayerY());
+        //Dibujamos el mapa
         map.DrawMap();
     }
 

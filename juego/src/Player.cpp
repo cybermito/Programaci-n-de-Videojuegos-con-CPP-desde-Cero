@@ -10,6 +10,25 @@ Player::Player(/* args */){//Definición del constructor
 {
 }*/
 
+int Player::getPlayerX(){
+    return x;
+}
+
+int Player::getPlayerY(){
+    return y;
+}
+
+/*
+void Player::setPlayerX(int playerX){
+    x = playerX;
+}
+
+void Player::setPlayerY(int playerY){
+    y = playerY;
+}
+*/
+
+
 void Player::callInput(){
     /* Comentamos esta línea ya que era por motivos de pruebas.
     std::cout << "LLamada a la función callInput()"<< std::endl;
@@ -41,6 +60,7 @@ void Player::callInput(){
 
         break;
     }
+    
     /* Fin control entrada teclado movimiento */
     /* Visualizamos las coordenadas del jugador */
     std::cout << "El jugador está en las coordenadas: " << x << ", " << y << std::endl; 

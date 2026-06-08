@@ -15,10 +15,13 @@ class GameMap
     
     public:
     GameMap();
+    MapCell *PlayerCell; //Puntero de la celda donde esté ubicado el jugador.
     MapCell cells[15][10]; //Creamos la matriz de celdas previamente definidas
 
-    /*Función que dibjará el map */
+    /*Función que dibujará el map */
     void DrawMap();
+    /*Función que obtiene la posición del jugador y actualizará el mapa */
+    void SetPlayerCell(int playerX, int playerY);
 
 };
 
