@@ -1403,6 +1403,17 @@ int main(){
 }
 ```
 
+Compilando y ejecutando el juego en este punto, podemos observar que los controles no van bien, están cambiados, cuando pulsamos 'w' y 's' se mueve de izquierda a derecha y si pulsamos 'a' o 'd' se mueve arriba - abajo.
+
+Para arreglarlo nos vamos al archivo _GameMap.cpp_ y en la matriz de celdas tenemos que indicar primeramente las filas y después las columnas.
+
+```cpp
+    //PlayerCell = &cells[playerX][playerY];
+    PlayerCell = &cells[playerY][playerX];
+```
+
+Además tenemos que hacer otro cambio en el movimiento del personaje (arriba - abajo), ya que la posición 0,0 empiezar en la esquina superior izquierda con lo cuál cuando bajamos y toma valores positivos, hay que sumar.
+
 ### Carga y Lectura de Archivos para Mapas en Videojuegos con C++
 
 ### Colisiones y Movimientos en Juegos 2D con Programación en C++
@@ -1544,6 +1555,8 @@ Nota: Si tenemos los archivos fuente en diferentes directorios, debemos especifi
     g++ main.cpp ./src/Robot.cpp -o ./output/main
 ```
 
-```
+Si hay más de un archivo fuente, como por ejemplo en este proyecto se recomienda usar cmake con CMakeLists.txt, pero si no se ha configurado aún, podemos compilar y construir el ejecutable del siguiente modo con g++
 
+```bash
+    g++ main.cpp src/Player.cpp src/MapCell.cpp src/GameMap.cpp -o output/main
 ```

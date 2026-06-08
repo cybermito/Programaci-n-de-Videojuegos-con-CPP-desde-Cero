@@ -37,6 +37,6 @@ void GameMap::SetPlayerCell(int playerX, int playerY){
     if (PlayerCell != NULL){
         PlayerCell->id = 0;
     }
-    PlayerCell = &cells[playerX][playerY]; //Vamos a la dirección de memoria de la posición de la celda para tomar su valor.
+    PlayerCell = &cells[playerY][playerX]; //Vamos a la dirección de memoria de la posición de la celda para tomar su valor.
     PlayerCell->id = 'H';
 }

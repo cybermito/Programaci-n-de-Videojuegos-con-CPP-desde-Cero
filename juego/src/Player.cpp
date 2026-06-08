@@ -41,11 +41,11 @@ void Player::callInput(){
    switch (userInput){
 
     case 'w':
-        y++;
+        y--;
         std::cout << "El jugador se mueve arriba." << std::endl;
         break;
     case 's':
-        y--;
+        y++;
         std::cout << "El jugador se mueve abajo." << std::endl;
         break;
     case 'a':
