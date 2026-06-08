@@ -20,8 +20,12 @@ class GameMap
 
     /*Función que dibujará el map */
     void DrawMap();
+
     /*Función que obtiene la posición del jugador y actualizará el mapa */
     void SetPlayerCell(int playerX, int playerY);
+
+    /*Fución para cargar el archivo del mapa*/
+    void LoadMapFromFile();
 
 };
 

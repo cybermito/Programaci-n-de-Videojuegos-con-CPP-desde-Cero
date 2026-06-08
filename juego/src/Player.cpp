@@ -42,19 +42,19 @@ void Player::callInput(){
 
     case 'w':
         y--;
-        std::cout << "El jugador se mueve arriba." << std::endl;
+        //std::cout << "El jugador se mueve arriba." << std::endl;
         break;
     case 's':
         y++;
-        std::cout << "El jugador se mueve abajo." << std::endl;
+        //std::cout << "El jugador se mueve abajo." << std::endl;
         break;
     case 'a':
         x--;
-        std::cout << "El jugador se mueve izquierda." << std::endl;
+        //std::cout << "El jugador se mueve izquierda." << std::endl;
         break;
     case 'd':
         x++;
-        std::cout << "El jugador se mueve derecha." << std::endl;
+        //std::cout << "El jugador se mueve derecha." << std::endl;
         break;
     default:
 
@@ -63,5 +63,5 @@ void Player::callInput(){
     
     /* Fin control entrada teclado movimiento */
     /* Visualizamos las coordenadas del jugador */
-    std::cout << "El jugador está en las coordenadas: " << x << ", " << y << std::endl; 
+    //std::cout << "El jugador está en las coordenadas: " << x << ", " << y << std::endl; 
 }

@@ -1412,9 +1412,48 @@ Para arreglarlo nos vamos al archivo _GameMap.cpp_ y en la matriz de celdas tene
     PlayerCell = &cells[playerY][playerX];
 ```
 
-Además tenemos que hacer otro cambio en el movimiento del personaje (arriba - abajo), ya que la posición 0,0 empiezar en la esquina superior izquierda con lo cuál cuando bajamos y toma valores positivos, hay que sumar.
+Además tenemos que hacer otro cambio en el movimiento del personaje (arriba - abajo), ya que la posición (0,0) empiezar en la esquina superior izquierda con lo cuál cuando bajamos y toma valores positivos, hay que sumar.
 
 ### Carga y Lectura de Archivos para Mapas en Videojuegos con C++
+
+En esta parte vamos a crear un archivo de mapa para introducir la información en nuestro juego y tener siempre un mapa creado. En esta ocasión tenemos que hacer uso de las librerías que nos permiten leer y grabar información en archivos. (Librería \<fstream>)
+
+En la clase GameMap (.hpp y .cpp) crearemos una función que nos sirva para cargar el mapa desde el archivo a memoria para su uso en el juego.
+
+En el archivo GameMap.hpp
+
+```cpp
+    //....
+    protected:
+        void LoadMapFromFile();
+    //....
+```
+
+En el archivo GameMap.cpp
+
+```cpp
+
+    //....
+    #include <fstream>
+    //....
+
+    //....
+    void GameMap::LoadMapFromFile(){
+        std::string line; //Guardaremos cada línea del archivo leído.
+        std::ifstream myMap("map.txt"); //Creamos el objeto myMap que contrendrá el contenido del archivo.
+
+        /*Comprobamos si el el archio del mapa está abierto. Nota: la primera vez que ejecutamos el juego
+        cómo el map.txt no existe nos dará error, así que sería conveniente crearlo a mano o crearlo desde el código. Inicialmente lo voy a generar a mano, pero lo ideal es crear un generador de laberintos y crear el archivo con este.
+        */
+        if (myMap.is_open()){
+            std::cout << "Mapa cargado correctamente..." << std::endl;
+        } else {
+            std::cout << "ERROR FATAL: ARCHIVO DE MAPA NO HA PODIDO SER CARGADO. ¿EXISTE?" << std::endl;
+        }
+    }
+    //....
+
+```
 
 ### Colisiones y Movimientos en Juegos 2D con Programación en C++
 

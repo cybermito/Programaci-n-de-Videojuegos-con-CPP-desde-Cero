@@ -1,10 +1,13 @@
 #include "../include/GameMap.hpp"
 #include <iostream>
+#include <fstream> //Para leer y grabar archivos
 
 
 GameMap::GameMap(){ //Constructor    
     //Nos aseguramos al iniciar el programa que el puntero esté vacio para que no se rompa el programa
     PlayerCell = NULL;
+    //cargamos el mapa desde el archivo
+    LoadMapFromFile();
 }
 
 /*mapCell::~MapCell(){
@@ -39,4 +42,18 @@ void GameMap::SetPlayerCell(int playerX, int playerY){
     }
     PlayerCell = &cells[playerY][playerX]; //Vamos a la dirección de memoria de la posición de la celda para tomar su valor.
     PlayerCell->id = 'H';
+}
+
+void GameMap::LoadMapFromFile(){
+    std::string line; //Guardaremos cada línea del archivo leído.
+    std::ifstream myMap("mapas/map.txt"); 
+
+    /*Comprobamos si el el archio del mapa está abierto. Nota: la primera vez que ejecutamos el juego
+    cómo el map.txt no existe nos dará error, así que sería conveniente crearlo a mano o crearlo desde el código. Inicialmente lo voy a generar a mano, pero lo ideal es crear un generador de laberintos y crear el archivo con este.
+    */
+    if (myMap.is_open()){
+        std::cout << "Mapa cargado correctamente..." << std::endl;
+    } else {
+        std::cout << "ERROR FATAL: ARCHIVO DE MAPA NO HA PODIDO SER CARGADO. ¿EXISTE?" << std::endl;
+    }
 }
