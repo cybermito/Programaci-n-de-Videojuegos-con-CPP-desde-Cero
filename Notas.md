@@ -1440,7 +1440,7 @@ En el archivo GameMap.cpp
     //....
     void GameMap::LoadMapFromFile(){
         std::string line; //Guardaremos cada línea del archivo leído.
-        std::ifstream myMap("map.txt"); //Creamos el objeto myMap que contrendrá el contenido del archivo.
+        std::ifstream myMap("map.txt"); //Creamos el objeto myMap que guardará el contenido del archivo en memoria (input flow stream - Entrada flujo de datos.).
 
         /*Comprobamos si el el archio del mapa está abierto. Nota: la primera vez que ejecutamos el juego
         cómo el map.txt no existe nos dará error, así que sería conveniente crearlo a mano o crearlo desde el código. Inicialmente lo voy a generar a mano, pero lo ideal es crear un generador de laberintos y crear el archivo con este.
@@ -1455,7 +1455,46 @@ En el archivo GameMap.cpp
 
 ```
 
+Inicialmente creamos el fichero map.txt manualmente y dibujando el mapa en el de tal forma que los '1' serán los muros, los '0' camino libre y resto de símbolos que elijamos otras propiedades o eventos del mapa.
+
+Ejemplo del map.txt:
+
+```txt
+1111111111
+1000000001
+1000000001
+1000000001
+1000000001
+1000000001
+1000000001
+1000000001
+1000000001
+1000000001
+1000000001
+1000000001
+1000000001
+1000000001
+1111111111
+```
+
 ### Colisiones y Movimientos en Juegos 2D con Programación en C++
+
+Ahora lo que vamos a hacer es, una vez cargado el mapa, leer cada una de las celdas que hemos puesto y comprobar si es '1' genera colisión con un muro, no dejando pasar al jugador y si es '0' puede caminar libremente el jugador.
+
+Antes de empezar con esta lógica de colisiones, en el archivo MapCell.hpp cambiamos el tipo de dato del id de entero a char.
+
+```cpp
+    //int id;
+    char id;
+```
+
+Ahora realizaremos una prueba de carga y dibujado del mapa, la carga del archivo ya la tenemos, entonces en el apartado donde comprobamos que existe el archivo _map.txt_ lo leemos y dibujamos el mapa.
+
+Archivo GameMap.cpp
+
+```cpp
+
+```
 
 ### Colisiones y restricciones de movimientos en mapas de juegos
 

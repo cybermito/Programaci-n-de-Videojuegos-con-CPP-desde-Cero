@@ -18,7 +18,7 @@ class MapCell
     public:
     MapCell();
 
-    int id;
+    char id; //lo hacemos char para facilitar el dibujado de carácteres.
 
 };
 
