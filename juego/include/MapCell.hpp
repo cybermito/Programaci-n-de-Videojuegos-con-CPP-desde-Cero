@@ -20,6 +20,8 @@ class MapCell
 
     char id; //lo hacemos char para facilitar el dibujado de carácteres.
 
+    bool isBlocked(); // Método para comprobar si la celda es una pared o no.
+
 };
 
 #endif

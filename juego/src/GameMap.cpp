@@ -34,14 +34,21 @@ void GameMap::DrawMap(){
 }
 
 /*Definición del método SetPlayerCell() para el control de posición del jugador en el mapa y su dibujado */
-void GameMap::SetPlayerCell(int playerX, int playerY){
+bool GameMap::SetPlayerCell(int playerX, int playerY){
     //std::cout << "Las coordenadas del jugador son: " << playerX << ", " << playerY << std::endl;
-    //Comprobamos si la celda está vacía o no para resetearla y repintar el mapa
-    if (PlayerCell != NULL){
-        PlayerCell->id = '0';
-    }
-    PlayerCell = &cells[playerY][playerX]; //Vamos a la dirección de memoria de la posición de la celda para tomar su valor.
-    PlayerCell->id = 'H';
+    //Comprobamos si la celda es una pared
+    if (cells[playerY][playerX].isBlocked()){
+        //No dejamos que se mueva el jugador
+        return false;
+    } else {
+       //Comprobamos si la celda está vacía o no para resetearla y repintar el mapa
+        if (PlayerCell != NULL){
+            PlayerCell->id = '0';
+        }
+        PlayerCell = &cells[playerY][playerX]; //Vamos a la dirección de memoria de la posición de la celda para tomar su valor.
+        PlayerCell->id = 'H';
+        return true;
+    }   
 }
 
 void GameMap::LoadMapFromFile(){

@@ -36,9 +36,15 @@ int main(){
         //Aquí va todo el bucle del juego
         hero.callInput();
         //Tomamos la posición del jugador
-        map.SetPlayerCell(hero.getPlayerX(), hero.getPlayerY());
-        //Dibujamos el mapa
-        map.DrawMap();
+        if(map.SetPlayerCell(hero.getPlayerX(), hero.getPlayerY())){
+            //Dibujamos el mapa
+            map.DrawMap();
+        } else {
+            //Reseteamos la posición del jugador
+            hero.resetToSafePosition();
+            //Dibujamos el mapa
+            map.DrawMap();
+        }
     }
 
     return 0;

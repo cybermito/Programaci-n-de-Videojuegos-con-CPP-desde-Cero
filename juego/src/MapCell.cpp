@@ -15,3 +15,13 @@ MapCell::MapCell(){ //Constructor
 /*mapCell::~MapCell(){
 
 }*/
+
+//Definición del método para detectar una pared
+
+bool MapCell::isBlocked(){
+    if (id == '1' or id == '#'){
+        return true;
+    } else {
+        return false;
+    }
+}

@@ -1620,6 +1620,264 @@ void GameMap::DrawMap(){
 
 ### Colisiones y restricciones de movimientos en mapas de juegos
 
+En este apartado vamos a hacer que el personaje no pueda atravesar una pared, lo cuál viene representada por el carácter '1'. Para hacer esto, el personaje jugador tiene que consultar al mapa si puede moverse a la posición correspondiente, en ese momento, antes de realizar el movimiento definitivo, hay que comparar el contenido de la celda. Si el contenido es '1' o '#', es una pared y el jugador debe quedarse en la posición que estaba, no puede moverse, si es distinto, realiza el movimiento normal.
+
+En el archivo _MapCell.hpp_ vamos a crear un método nuevo llamado _isBlocked()_ donde comprobaremos si la celda es una pared o no.
+
+```cpp
+    public:
+        bool isBlocked();
+```
+
+Luego en el archivo _MapCell.cpp_ definimos la lógica de dicho método.
+
+```cpp
+    bool MapCell::isBlocked(){
+        if (id == '1'){
+            return true;
+        } else {
+            return false;
+        }
+    }
+```
+
+Ahora en el método _SetPlayerCell()_ haremos uso de la comprobación del estado de la celda donde nos queremos mover con el personaje. Este método está en el archivo _GameMap.cpp_.
+
+```cpp
+    void GameMap::SetPlayerCell(int playerX, int playerY){
+        //std::cout << "Las coordenadas del jugador son: " << playerX << ", " << playerY << std::endl;
+        //Comprobamos si la celda es una pared
+        if (cells[playerY][playerX].isBlocked()){
+            //No dejamos que se mueva el jugador
+        } else {
+        //Comprobamos si la celda está vacía o no para resetearla y repintar el mapa, realizamos el movimiento
+            if (PlayerCell != NULL){
+                PlayerCell->id = '0';
+            }
+            PlayerCell = &cells[playerY][playerX]; //Vamos a la dirección de memoria de la posición de la celda para tomar su valor.
+            PlayerCell->id = 'H';
+        }
+    }
+```
+
+Hay tres posibles maneras de mover el personaje a su posición anterior cuando se encuentre con un obstáculo:
+
+1. Guardar las coordenadas del jugador anteriores y en el caso de que este no se pueda mover a la celda siguiente, regresarlo a la posición anterior.
+
+2. Guardar el la celda del mapa si puede o no pasar por ahí (ya lo tenemos hecho) y las coordenadas de la celda, y si no puede pasar le asginamos las coordenadas de la celda anterior al jugador para resetearlo.
+
+3. El mapa le diga al jugador que no puede pasar y le asigne manualmente las coordenadas.
+
+Vamos a usar la opción 1.
+
+Primeramente necesitaremos guardar las coordenadas actuales del jugador, para en el caso de que no se pueda mover, este se mantenga en la posición original. En la clase **Player** necesitaremos dos nuevos atributos para guardar dichas coordenadas.
+
+Archivo _Player.hpp_
+
+```cpp
+    //....
+    protected:
+        //Movimiento del jugador.
+        int x, y; //Coordenadas nuevas
+        int lastX, lastY; //Coordenadas anteriores
+
+    public:
+        Player(); //Constructor
+        //virtual ~Player(); //Destructor, lo comentamos temporalmente.
+
+        //Declaramos los getters y setters para dar acceso al movimiento del jugador.
+        int getPlayerX();
+        int getPlayerY();
+        int getPlayerLastX();
+        int getPlayerLastY();
+        /*
+        void setPlayerX(int posX);
+        void setPlayerY(int posY);
+        void setPlayerLastX(int lastPosX);
+        void setPlayerLastY(int lastPosY);
+        */
+    //....
+```
+
+Después en el archivo _Player.cpp_ justo antes de realizar el movimiento guardamos la posición actual para posteriormente poder usarla en el caso de que sea necesario, por ejemplo nos encontremos con un muro.
+
+En el mismo archivo _Player.cpp_ debemos definir los getters y setters que hemos declarado en la clase (archivo _Player.hpp_)
+
+Archivo _Player.cpp_
+
+```cpp
+    //....
+    //Definición de los getters para los atributos protegidos
+    int Player::getPlayerX(){
+        return x;
+    }
+
+    int Player::getPlayerY(){
+        return y;
+    }
+
+    int Player::getPlayerLastX(){
+        return lastX;
+    }
+
+    int Player::getPlayerLastY(){
+        return lastY;
+    }
+
+    //Definición de los setters para los atributos protegidos.
+    /*
+    void Player::setPlayerX(int playerX){
+        x = playerX;
+    }
+
+    void Player::setPlayerY(int playerY){
+        y = playerY;
+    }
+    */
+
+    void Player::setPlayerLastX(int playerLastPosX){
+        lastX = playerLastPosX;
+    }
+
+    void Player::setPlayerLastY(int playerLastPosY){
+        lastY = playerLastPosY;
+    }
+    //....
+
+    //....
+    void Player::callInput(){
+    /* Comentamos esta línea ya que era por motivos de pruebas.
+    std::cout << "LLamada a la función callInput()"<< std::endl;
+    */
+    /* Vamos a crear el movimiento del jugador */
+    char userInput = ' ';
+
+    std::cin >> userInput;
+
+    switch (userInput){
+
+        case 'w':
+            setPlayerLastY(y);
+            y--;
+            //std::cout << "El jugador se mueve arriba." << std::endl;
+            break;
+        case 's':
+            setPlayerLastY(y);
+            y++;
+            //std::cout << "El jugador se mueve abajo." << std::endl;
+            break;
+        case 'a':
+            setPlayerLastX(x);
+            x--;
+            //std::cout << "El jugador se mueve izquierda." << std::endl;
+            break;
+        case 'd':
+            setPlayerLastX(x);
+            x++;
+            //std::cout << "El jugador se mueve derecha." << std::endl;
+            break;
+        default:
+
+            break;
+        }
+
+```
+
+Ya tenemos los atributos para poder guardar la posición anterior del jugador y recuperarla en caso de encontrar algún obstáculo.
+
+Ahora crearemos un método en la clase _Player.hpp_ que definiremos posteriormente en el archivo _Player.cpp_ que nos ayudará a resetear la posición del jugador a su estado anterior.
+
+Archivo _Player.hpp_
+
+```cpp
+    //.....
+    //Método para resetear la posición del jugador a su estado anterior.
+    void resetToSafePosition();
+```
+
+Archivo _Player.cpp_
+
+```cpp
+    //....
+    //Definición del método que reseteará las posiciones x e y del jugador
+    void Player::resetToSafePosition(){
+        x = getPlayerLastX();
+        y = getPlayerLastY();
+    }
+```
+
+Ahora tenemos que continuar con la lógica que estabamos implementando en _GameMap.cpp_ donde comprobamos si el jugador podía pasar o no, según la definición del mapa. Esto lo haciamos en la función/método _void gameMap()_
+
+En dicho método lo primero es cambiar para que devuelva un valor booleano en vez de no devolver nada. Este cambio hay que hacerlo en los archivos _GameMap.hpp_ y _GameMap.cpp_
+
+```cpp
+    bool GameMap::SetPlayerCell(int playerX, int playerY)
+```
+
+Nuestro método _SetoPlayerCell()_ quedará del siguiente modo en su definición, devolviendo **true** o **false** según pueda o no pasar el jugador por la celda solicitada.
+
+Archivo _GameMap.cpp_
+
+```cpp
+    /*Definición del método SetPlayerCell() para el control de posición del jugador en el mapa y su dibujado */
+    bool GameMap::SetPlayerCell(int playerX, int playerY){
+        //std::cout << "Las coordenadas del jugador son: " << playerX << ", " << playerY << std::endl;
+        //Comprobamos si la celda es una pared
+        if (cells[playerX][playerY].isBlocked()){
+            //No dejamos que se mueva el jugador
+            return false;
+        } else {
+        //Comprobamos si la celda está vacía o no para resetearla y repintar el mapa
+            if (PlayerCell != NULL){
+                PlayerCell->id = '0';
+            }
+            PlayerCell = &cells[playerY][playerX]; //Vamos a la dirección de memoria de la posición de la celda para tomar su valor.
+            PlayerCell->id = 'H';
+            return true;
+        }
+    }
+```
+
+Llega el momento de crear la lógica en el _main.cpp_ para comprobar el contenido de la celda donde se moverá el jugador y saber si es una pared o una celda vacía, dejando pasar al jugador o devolviéndolo a su posición anterior.
+
+Archivo _main.cpp_
+
+```cpp
+    #include <iostream>
+    #include "include/Player.hpp" //Incluimos la librería de cabecera donde definimos
+    //nuestras propias clases. Hay que indicar la ruta completa del archivo si no está
+    //en el mismo nivel que main.cpp
+    #include "include/MapCell.hpp" //Para el control de las celdas del mapa
+    #include "include/GameMap.hpp" //Clase generadora de mapas
+
+    int main(){
+        bool isGameOver = false;
+        GameMap map; //Creamos el objeto mapa
+        Player hero; //Creamos el objeto jugador
+
+        std::cout << "¡Comienza el juego!" << std::endl;
+        /* Creamos el game loop */
+        while(!isGameOver){
+            //Aquí va todo el bucle del juego
+            hero.callInput();
+            //Tomamos la posición del jugador
+            if(map.SetPlayerCell(hero.getPlayerX(), hero.getPlayerY())){
+                //Dibujamos el mapa
+                map.DrawMap();
+            } else {
+                //Reseteamos la posición del jugador
+                hero.resetToSafePosition();
+                //Dibujamos el mapa
+                map.DrawMap();
+            }
+        }
+
+        return 0;
+    }
+```
+
+Compilando y ejecutando el juego hay un pequeño bug, es que cuando colisiono con una pared y sigo dándole hacia esa pared, el personaje salta a la línea de arriba, esto sobre todo cuando va de izquierda a derecha y viceversa, lo mismo pasa si voy hacia abajo o arriba, en est caso se pasa a la siguiente celda vacía por debajo o por arriba según me esté moviendo.
+
 ### Colisiones y portadas en Videojuegos: Implementación en C++
 
 ### Creación de Juegos de Aventuras en C++: Laberintos y Cofres del Tesoro

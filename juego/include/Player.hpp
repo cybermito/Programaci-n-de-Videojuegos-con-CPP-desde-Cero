@@ -9,7 +9,8 @@ class Player
 
     protected:
         //Movimiento del jugador.
-        int x, y;
+        int x, y; //Coordenadas nuevas
+        int lastX, lastY; //Coordenadas anteriores
         
     public:
         Player(); //Constructor
@@ -18,14 +19,19 @@ class Player
         //Declaramos los getters y setters para dar acceso al movimiento del jugador.
         int getPlayerX();
         int getPlayerY();
-
+        int getPlayerLastX();
+        int getPlayerLastY();
         /*
         void setPlayerX(int posX);        
         void setPlayerY(int posY);
         */
+        void setPlayerLastX(int lastPosX);
+        void setPlayerLastY(int lastPosY);
 
         //Método para la detección de las pulsaciones de las teclas y el movimiento del jugador
         void callInput();
+        //Método para resetear la posición del jugador a su estado anterior.
+        void resetToSafePosition();
 
 };
 

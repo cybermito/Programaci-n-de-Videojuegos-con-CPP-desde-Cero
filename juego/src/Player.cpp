@@ -9,7 +9,7 @@ Player::Player(/* args */){//Definición del constructor
 /*Player::~Player() //Definición del destructor
 {
 }*/
-
+//Definición de los getters para los atributos protegidos
 int Player::getPlayerX(){
     return x;
 }
@@ -18,6 +18,15 @@ int Player::getPlayerY(){
     return y;
 }
 
+int Player::getPlayerLastX(){
+    return lastX;
+}
+
+int Player::getPlayerLastY(){
+    return lastY;
+}
+
+//Definición de los setters para los atributos protegidos.
 /*
 void Player::setPlayerX(int playerX){
     x = playerX;
@@ -27,6 +36,14 @@ void Player::setPlayerY(int playerY){
     y = playerY;
 }
 */
+
+void Player::setPlayerLastX(int playerLastPosX){
+    lastX = playerLastPosX;
+}
+
+void Player::setPlayerLastY(int playerLastPosY){
+    lastY = playerLastPosY;
+}
 
 
 void Player::callInput(){
@@ -41,18 +58,22 @@ void Player::callInput(){
    switch (userInput){
 
     case 'w':
+        setPlayerLastY(y);
         y--;
         //std::cout << "El jugador se mueve arriba." << std::endl;
         break;
     case 's':
+        setPlayerLastY(y);
         y++;
         //std::cout << "El jugador se mueve abajo." << std::endl;
         break;
     case 'a':
+        setPlayerLastX(x);
         x--;
         //std::cout << "El jugador se mueve izquierda." << std::endl;
         break;
     case 'd':
+        setPlayerLastX(x);
         x++;
         //std::cout << "El jugador se mueve derecha." << std::endl;
         break;
@@ -64,4 +85,10 @@ void Player::callInput(){
     /* Fin control entrada teclado movimiento */
     /* Visualizamos las coordenadas del jugador */
     //std::cout << "El jugador está en las coordenadas: " << x << ", " << y << std::endl; 
+}
+
+//Definición del método que reseteará las posiciones x e y del jugador
+void Player::resetToSafePosition(){
+    x = getPlayerLastX();
+    y = getPlayerLastY();
 }
