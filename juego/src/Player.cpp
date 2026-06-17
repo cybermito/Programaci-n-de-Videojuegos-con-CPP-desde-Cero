@@ -59,21 +59,25 @@ void Player::callInput(){
 
     case 'w':
         setPlayerLastY(y);
+        setPlayerLastX(x);
         y--;
         //std::cout << "El jugador se mueve arriba." << std::endl;
         break;
     case 's':
         setPlayerLastY(y);
+        setPlayerLastX(x);
         y++;
         //std::cout << "El jugador se mueve abajo." << std::endl;
         break;
     case 'a':
         setPlayerLastX(x);
+        setPlayerLastY(y);
         x--;
         //std::cout << "El jugador se mueve izquierda." << std::endl;
         break;
     case 'd':
         setPlayerLastX(x);
+        setPlayerLastY(y);
         x++;
         //std::cout << "El jugador se mueve derecha." << std::endl;
         break;

@@ -30,11 +30,14 @@ int main(){
     GameMap map; //Creamos el objeto mapa
     Player hero; //Creamos el objeto jugador
 
-    std::cout << "¡Comienza el juego!" << std::endl;
+    //Dibujamos la intro
+    map.DrawIntro();
+
+    //std::cout << "¡Comienza el juego!" << std::endl;
     /* Creamos el game loop */
     while(!isGameOver){
         //Aquí va todo el bucle del juego
-        hero.callInput();
+        
         //Tomamos la posición del jugador
         if(map.SetPlayerCell(hero.getPlayerX(), hero.getPlayerY())){
             //Dibujamos el mapa
@@ -45,6 +48,7 @@ int main(){
             //Dibujamos el mapa
             map.DrawMap();
         }
+        hero.callInput();
     }
 
     return 0;

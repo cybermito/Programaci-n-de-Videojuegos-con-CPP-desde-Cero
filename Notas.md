@@ -1880,7 +1880,97 @@ Compilando y ejecutando el juego hay un pequeño bug, es que cuando colisiono co
 
 ### Colisiones y portadas en Videojuegos: Implementación en C++
 
+En este apartado vamos a ver como poner una portada de inicio al juego, para sustituir el mensaje de saludo.
+
+Primeramente crearemos una función/método dentro del archivo _GameMap.hpp_ que posteriormente definiremos en el archivo _GameMap.cpp_, dentro de esta función cargaremos un archivo que contendrá una serie de caracteres ASCII enseñando un dibujo. Estos diseños de imágenes ASCII los podremos encontrar en varias plataformas web. Por ejemplo buscar en _*Google*_: **DRAGON ASCII ART**
+
+Entonces, en el archivo _GameMap.hpp_ agregamos:
+
+```cpp
+    //....
+    void DrawIntro();
+    //....
+```
+
+y en el archivo _GameMap.hpp_ definimos la función agregada. La definición sería similar a la de la función **DrawMap()** ya que cargaremos la intro desde un archivo **intro.txt**.
+
+```cpp
+void GameMap::DrawIntro(){
+    std::string line; //Guardaremos cada línea del archivo leído.
+    int row = 0; //Variable para saber en que fila del mapa estamos.
+    std::ifstream myMap("intros/intro.txt"); //Creamos el objeto myMap que guardará el contenido del archivo en memoria (input flow stream - Entrada flujo de datos.).
+
+    /*Comprobamos si el el archio del mapa está abierto. Nota: la primera vez que ejecutamos el juego
+    cómo el map.txt no existe nos dará error, así que sería conveniente crearlo a mano o crearlo desde el código. Inicialmente lo voy a generar a mano, pero lo ideal es crear un generador de laberintos y crear el archivo con este.
+    */
+    if (myMap.is_open()){
+        //std::cout << "Mapa cargado correctamente..." << std::endl;
+        //std::cout << "Inicio dibujado mapa desde archivo..." << std::endl;
+
+        while (getline(myMap, line)){
+            // std::cout << line << std::endl; //Sirvió para comprobar la lectura y dibujado del mapa.
+            // Incluimos el mapa en el juego.
+
+
+        }
+
+        //std::cout << "Fin dibujado mapa desde archivo..." << std::endl;
+
+    } else {
+        std::cout << "ERROR FATAL: ARCHIVO DE LA INTRO NO HA PODIDO SER CARGADO. ¿EXISTE?" << std::endl;
+    }
+}
+```
+
+Y en el archivo _main.cpp_ cargamos la intro antes de cargar el mapa y de que comience el juego (bucle while).
+
+```cpp
+    //....
+    Player hero; //Creamos el objeto jugador
+
+    //Dibujamos la intro
+    map.DrawIntro();
+
+    //std::cout << "¡Comienza el juego!" << std::endl;
+    /* Creamos el game loop */
+    //....
+```
+
+En la función **DrawIntro()** completamos el interior del while, la lectura de cada una de las líneas del archivo _intro.txt_ y cuando finalice el while introducimos un _cin_ para que se quede a la espera de pulsar una tecla antes de iniciar el juego.
+
+```cpp
+void GameMap::DrawIntro(){
+    std::string line; //Guardaremos cada línea del archivo leído.
+    std::ifstream myIntro("intros/intro.txt"); //Creamos el objeto myIntro que guardará el contenido del archivo en memoria (input flow stream - Entrada flujo de datos.).
+
+    /*Comprobamos si el el archio del mapa está abierto. Nota: la primera vez que ejecutamos el juego
+    cómo el map.txt no existe nos dará error, así que sería conveniente crearlo a mano o crearlo desde el código. Inicialmente lo voy a generar a mano, pero lo ideal es crear un generador de laberintos y crear el archivo con este.
+    */
+    if (myIntro.is_open()){
+
+        while (getline(myIntro, line)){
+            // std::cout << line << std::endl; //Sirvió para comprobar la lectura y dibujado del mapa.
+            // Incluimos el mapa en el juego.
+
+            std::cout << line << std::endl;
+        }
+
+        //Esperamos hasta que el usuario pulse una tecla o enter.
+        std::cin >> line;
+
+    } else {
+        std::cout << "ERROR FATAL: ARCHIVO DE LA INTRO NO HA PODIDO SER CARGADO. ¿EXISTE?" << std::endl;
+    }
+}
+```
+
+En el archivo _main.cpp_ he cambiado el orden de ejecución de la función _hero.callInput();_ para que la ejecute después de dibujar el mapa, ya que si no, al cargar la intro tendríamos que pulsar dos veces una tecla + intro para comenzar el juego. Dentro del archivo _intro.txt_ hemos dibujado una imagen ASCII sacada de una de las muchas páginas que hay en la web.
+
+Ya tenemos la intro del juego, el juego y ahora vamos a añadir cofres del tesoro u otras herramientas y/o enemigos.
+
 ### Creación de Juegos de Aventuras en C++: Laberintos y Cofres del Tesoro
+
+En este apartado aprenderemos a crear celdas que contendrán cofres del tesoro (por ejemplo), o cualquier otra cosa.
 
 ### Programación Orientada a Objetos en Videojuegos Básicos
 

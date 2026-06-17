@@ -20,6 +20,7 @@ class GameMap
 
     /*Función que dibujará el map */
     void DrawMap();
+    void DrawIntro();
 
     /*Función que obtiene la posición del jugador y actualizará el mapa */
     bool SetPlayerCell(int playerX, int playerY);
