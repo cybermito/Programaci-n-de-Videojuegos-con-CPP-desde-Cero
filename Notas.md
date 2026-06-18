@@ -1882,7 +1882,7 @@ Compilando y ejecutando el juego hay un pequeño bug, es que cuando colisiono co
 
 En este apartado vamos a ver como poner una portada de inicio al juego, para sustituir el mensaje de saludo.
 
-Primeramente crearemos una función/método dentro del archivo _GameMap.hpp_ que posteriormente definiremos en el archivo _GameMap.cpp_, dentro de esta función cargaremos un archivo que contendrá una serie de caracteres ASCII enseñando un dibujo. Estos diseños de imágenes ASCII los podremos encontrar en varias plataformas web. Por ejemplo buscar en _*Google*_: **DRAGON ASCII ART**
+Primeramente crearemos una función/método dentro del archivo _GameMap.hpp_ que posteriormente definiremos en el archivo _GameMap.cpp_, dentro de esta función cargaremos un archivo que contendrá una serie de caracteres ASCII enseñando un dibujo. Estos diseños de imágenes ASCII los podremos encontrar en varias plataformas web. Por ejemplo buscar en _*Google*_: **DRAGON ASCII ART** [Dibujos ASCII](https://ascii.co.uk/)
 
 Entonces, en el archivo _GameMap.hpp_ agregamos:
 
@@ -1970,7 +1970,31 @@ Ya tenemos la intro del juego, el juego y ahora vamos a añadir cofres del tesor
 
 ### Creación de Juegos de Aventuras en C++: Laberintos y Cofres del Tesoro
 
-En este apartado aprenderemos a crear celdas que contendrán cofres del tesoro (por ejemplo), o cualquier otra cosa.
+En este apartado aprenderemos a crear celdas que contendrán cofres del tesoro (por ejemplo), o cualquier otra cosa. Retocamos el _mapa.txt_ y añadimos más muros y en algún sitio colocamos un id que represente un cofre, por ejemplo para el **id '4'** lo sustituiremos por **'$'** que será el _cofre_. (Nota: investigar y arreglar que no puedo representar el cofre con el símbolo '€')
+
+En el _GameMap.cpp_ en la función _DrawMap()_ añadimos una nueva comparación para pintar el cofre.
+
+```cpp
+    //....
+    if(cells[i][p].id == '1'){
+        std::cout << '#'; // Representa una pared
+    } else if(cells[i][p].id == '0'){
+        std::cout << ' '; // Representa un espacio vacío
+    } else if(cells[i][p].id == 'H'){
+        std::cout << 'H'; // Representa al jugador
+    } else if(cells[i][p].id == '4'){
+        std::cout << '$'; // Represente el cofre
+    }
+    //....
+```
+
+Ya nos aparece el cofre en el mapa y ahora tendrémos que crear la lógica para que, cuando el jugador toque la celda que contiene el cofre salga la pantalla de '¡VICTORIA!'.
+
+Primeramente crearemos un nuevo método que pintará la pantalla de ¡VICTORIA! al igual que hacemos con el mapa y la pantalla de intro.
+
+Entonces, en los archivos _GameMap.hpp y GameMap.cpp_ creamos y definimos una nueva función llamada DrawVictory().
+
+Archivo _GameMap.hpp_
 
 ### Programación Orientada a Objetos en Videojuegos Básicos
 

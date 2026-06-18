@@ -1,9 +1,10 @@
 #include "../include/MapCell.hpp"
 
-/*Cada celda va a tener 3 posibles valores
-    H --> Jugador
-    0 --> Vacia
-    1 --> Pared
+/*Cada celda va a tener 4 posibles valores
+    H --> Jugador --> H
+    0 --> Vacia --> 
+    1 --> Pared --> #
+    4 --> Cofre --> €
 */
 
 MapCell::MapCell(){ //Constructor

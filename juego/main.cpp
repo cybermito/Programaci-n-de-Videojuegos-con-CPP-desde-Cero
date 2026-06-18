@@ -37,7 +37,14 @@ int main(){
     /* Creamos el game loop */
     while(!isGameOver){
         //Aquí va todo el bucle del juego
-        
+
+        /* Para que no se estén viendo la pantalla de inicio y una lista interminable de mapas,
+        se puede crear una instrucción que compruebe el sistema operativo que tienes y posteriormente
+        usar un comando del systema que limpie la pantall de la terminal. En Linux "clear" y en windows es
+        "cls"
+        */
+        system("clear");
+        std::cout << "Para moverte por el mapa usa las teclas w, a, s, d más intro," << std::endl;
         //Tomamos la posición del jugador
         if(map.SetPlayerCell(hero.getPlayerX(), hero.getPlayerY())){
             //Dibujamos el mapa

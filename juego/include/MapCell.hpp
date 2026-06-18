@@ -4,10 +4,12 @@
 #ifndef MAPCELL_HPP
 #define MAPCELL_HPP
 
-/*Cada celda va a tener 3 posibles valores
-    H --> Jugador
-    0 --> Vacia
-    1 --> Pared
+/*Cada celda va a tener 4 posibles valores
+    H --> Jugador --> H
+    0 --> Vacia --> 
+    1 --> Pared --> #
+    4 --> Cofre --> €
+
 */
 class MapCell
 {
