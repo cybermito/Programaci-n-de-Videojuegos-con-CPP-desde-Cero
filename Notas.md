@@ -1996,6 +1996,229 @@ Entonces, en los archivos _GameMap.hpp y GameMap.cpp_ creamos y definimos una nu
 
 Archivo _GameMap.hpp_
 
+```cpp
+    //....
+    /*Función que dibujará el map */
+    void DrawMap();
+    /*Función que dibujará la pantalla de introducción*/
+    void DrawIntro();
+    /*Función que dibujará la pantalla final cuando ganamos*/
+    void DrawVictory();
+    //....
+```
+
+La definición de la función _DrawVictory()_ en el archivo _GameMap.cpp_ es copiar la misma que _DrawIntro()_ solamente que cambiando el archivo que tiene que leer con los datos. Así que copiamos toda la estructura de dicha función para la nueva y cambiamos intro.txt por victory.txt.
+
+Ahora nos queda resolver la lógica de, cuando lleguemos al cofre con nuestro jugador, salte la pantalla **Victory** y finalice la partida. Para esta parte tendrémos que modificar los archivos _GameMap.cpp_ y _main.cpp_
+
+En el archivo _GameMap.cpp_ es donde comprobaremos si el jugado ha llegado a una celda donde esté el cofre del tesoro (Esta lógica podemos usarla también para poner otros premios o con el enemigo), justo en la función _SetPlayerCell()_, en esta función realizamos una primera comprobación de si está bloqueada o no la celda (muro), en el caso de que no esté bloqueada, comprobamos si hay (en este caso) el símbolo **'$'** que es el cofre, si lo hay ejecutamos la lógica de cargar la pantalla de **Victoria** y finalizamos el juego envíando una señal al bucle principal para que se salga. Y en el caso de que sea una celda normal continuamos comprobando que no esté vacía la celda y repintandola.
+
+Vamos a crear y definir una variable **bool gameOver** creando su getter y su setter para controlar el fin del juego.
+
+Archivo _GameMap.hpp_
+
+```cpp
+    //....
+    protected:
+        bool gameOver;
+
+    //....
+    public:
+    //.....
+    //Getters y Setters de los atributos protegidos
+        bool getGameOver();
+        void setGameOver(bool playerGameOver);
+    //....
+```
+
+En el archivo _GameMap.cpp_ definiremos las nuevas funciones creadas en _GameMap.hpp_ y la lógica para finalizar el juego. El archivo completo quedaría del siguiente modo:
+
+```cpp
+    #include "../include/GameMap.hpp"
+    #include <iostream>
+    #include <fstream> //Para leer y grabar archivos
+
+
+    GameMap::GameMap(){ //Constructor
+        gameOver = false;
+        //Nos aseguramos al iniciar el programa que el puntero esté vacio para que no se rompa el programa
+        PlayerCell = NULL;
+        //cargamos el mapa desde el archivo map.txt llamando a la función correspondiente en el constructor
+        LoadMapFromFile();
+    }
+
+    /*mapCell::~MapCell(){
+
+    }*/
+
+    /*Definición de los getters y setters */
+    bool GameMap::getGameOver(){
+        return gameOver;
+    }
+
+    void GameMap::setGameOver(bool playerGameOver){
+        gameOver = playerGameOver;
+    }
+
+    /*Definición del método DrawMap para dibujar el mapa */
+    void GameMap::DrawMap(){
+        for(int i=0; i < 15; i++){
+
+            for(int p=0; p < 10; p++){
+                /*Aquí vamos a dibujar el mapa según el contenido de la celda. Y también refrescarlo
+                con el movimiento del jugador para que quede representado donde corresponde. */
+                if(cells[i][p].id == '1'){
+                    std::cout << '#'; // Representa una pared
+                } else if(cells[i][p].id == '0'){
+                    std::cout << ' '; // Representa un espacio vacío
+                } else if(cells[i][p].id == 'H'){
+                    std::cout << 'H'; // Representa al jugador
+                } else if(cells[i][p].id == '4'){
+                    std::cout << '$'; // Represente el cofre
+                }
+
+                //El símbolo del € no lo puede representar, tengo que arreglarlo.
+            }
+            std::cout << std::endl;
+        }
+    }
+
+    /*Definición del método SetPlayerCell() para el control de posición del jugador en el mapa y su dibujado */
+    bool GameMap::SetPlayerCell(int playerX, int playerY){
+        //std::cout << "Las coordenadas del jugador son: " << playerX << ", " << playerY << std::endl;
+        //Comprobamos si la celda es una pared
+        if (cells[playerY][playerX].isBlocked()){
+            //No dejamos que se mueva el jugador
+            return false;
+        } else {
+            //Comprobamos si es un cofre, un enemigo u otra cosa que podremos ir añadiendo a posteriori.
+            if(cells[playerY][playerX].id == '4' or cells[playerY][playerX].id == '$'){
+                setGameOver(true);
+                DrawVictory();
+                return true;
+            } else {
+                //Comprobamos si la celda está vacía o no para resetearla y repintar el mapa
+                if (PlayerCell != NULL){
+                    PlayerCell->id = '0';
+                }
+                PlayerCell = &cells[playerY][playerX]; //Vamos a la dirección de memoria de la posición de la celda para tomar su valor.
+                PlayerCell->id = 'H';
+            }
+
+            return true;
+        }
+    }
+
+    void GameMap::DrawIntro(){
+        std::string line; //Guardaremos cada línea del archivo leído.
+        std::ifstream myIntro("intros/intro.txt"); //Creamos el objeto myIntro que guardará el contenido del archivo en memoria (input flow stream - Entrada flujo de datos.).
+
+        /*Comprobamos si el el archio del mapa está abierto. Nota: la primera vez que ejecutamos el juego
+        cómo el map.txt no existe nos dará error, así que sería conveniente crearlo a mano o crearlo desde el código. Inicialmente lo voy a generar a mano, pero lo ideal es crear un generador de laberintos y crear el archivo con este.
+        */
+        if (myIntro.is_open()){
+
+            while (getline(myIntro, line)){
+                // std::cout << line << std::endl; //Sirvió para comprobar la lectura y dibujado del mapa.
+                // Incluimos el mapa en el juego.
+
+                std::cout << line << std::endl;
+            }
+
+            //Esperamos hasta que el usuario pulse una tecla o enter.
+            std::cin >> line;
+
+        } else {
+            std::cout << "ERROR FATAL: ARCHIVO DE LA INTRO NO HA PODIDO SER CARGADO. ¿EXISTE?" << std::endl;
+        }
+    }
+
+    void GameMap::DrawVictory(){
+        std::string line; //Guardaremos cada línea del archivo leído.
+        std::ifstream myIntro("intros/victory.txt"); //Creamos el objeto myIntro que guardará el contenido del archivo en memoria (input flow stream - Entrada flujo de datos.).
+
+        /*Comprobamos si el el archio del mapa está abierto. Nota: la primera vez que ejecutamos el juego
+        cómo el map.txt no existe nos dará error, así que sería conveniente crearlo a mano o crearlo desde el código. Inicialmente lo voy a generar a mano, pero lo ideal es crear un generador de laberintos y crear el archivo con este.
+        */
+        if (myIntro.is_open()){
+
+            while (getline(myIntro, line)){
+                // std::cout << line << std::endl; //Sirvió para comprobar la lectura y dibujado del mapa.
+                // Incluimos el mapa en el juego.
+
+                std::cout << line << std::endl;
+            }
+
+            //Esperamos hasta que el usuario pulse una tecla o enter.
+            std::cin >> line;
+
+        } else {
+            std::cout << "ERROR FATAL: ARCHIVO DE VICTORIA NO HA PODIDO SER CARGADO. ¿EXISTE?" << std::endl;
+        }
+    }
+
+    void GameMap::LoadMapFromFile(){
+        std::string line; //Guardaremos cada línea del archivo leído.
+        int row = 0; //Variable para saber en que fila del mapa estamos.
+        std::ifstream myMap("mapas/map.txt"); //Creamos el objeto myMap que guardará el contenido del archivo en memoria (input flow stream - Entrada flujo de datos.).
+
+        /*Comprobamos si el el archio del mapa está abierto. Nota: la primera vez que ejecutamos el juego
+        cómo el map.txt no existe nos dará error, así que sería conveniente crearlo a mano o crearlo desde el código. Inicialmente lo voy a generar a mano, pero lo ideal es crear un generador de laberintos y crear el archivo con este.
+        */
+        if (myMap.is_open()){
+            std::cout << "Mapa cargado correctamente..." << std::endl;
+            //std::cout << "Inicio dibujado mapa desde archivo..." << std::endl;
+
+            while (getline(myMap, line)){
+                // std::cout << line << std::endl; //Sirvió para comprobar la lectura y dibujado del mapa.
+                // Incluimos el mapa en el juego.
+
+                for (int col = 0; col < line.length(); col++){
+                    cells[row][col].id = line[col];
+                }
+
+                row++;
+            }
+
+            //std::cout << "Fin dibujado mapa desde archivo..." << std::endl;
+
+        } else {
+            std::cout << "ERROR FATAL: ARCHIVO DE MAPA NO HA PODIDO SER CARGADO. ¿EXISTE?" << std::endl;
+        }
+    }
+```
+
+Una vez realizados estos cambios, en el main tenemos que gestionar la salida del juego, el cambio es sencillo, en el bucle principal comprobaremos cuando cambia la variable gameOver a true para finalizar el juego. También dentro de la lógica del juego en el bucle cuando finalice el juego hemos añadido un condicional para que no pinte el map después de la pantalla **VICTORY**.
+
+```cpp
+    //....
+    while(!map.getGameOver()){
+        system("clear");
+        std::cout << "Para moverte por el mapa usa las teclas w, a, s, d más intro," << std::endl;
+        //Tomamos la posición del jugador
+        if(map.SetPlayerCell(hero.getPlayerX(), hero.getPlayerY())){
+            if(!map.getGameOver()){ //Comprobamos si ha finalizado el juego para que no pinte el mapa
+                //seguidamente después de salir la pantalla de fin de juego.
+                //Dibujamos el mapa
+                map.DrawMap();
+            } else {
+                std::cout << "Pulsa una tecla + enter para cerrar el juego" << std::endl;
+            }
+
+        } else {
+            //Reseteamos la posición del jugador
+            hero.resetToSafePosition();
+            //Dibujamos el mapa
+            map.DrawMap();
+        }
+        hero.callInput();
+    }
+```
+
+Cuando _map.getGameOver()_ nos devuelva true debería salirse del bucle y finalizar el juego.
+
+_*Resuelto:*_ Actualmente está teniendo un pequeño bug y es que cuando sale la pantalla **VICTORY** y pulsamos una tecla, nos vuelve a salir el mapa y hasta que no pulsamos un par de veces la tecla no se sale del juego.
+
 ### Programación Orientada a Objetos en Videojuegos Básicos
 
 ### Creación de Enemigos y Laberintos en C++ avanzado

@@ -3,7 +3,8 @@
 #include <fstream> //Para leer y grabar archivos
 
 
-GameMap::GameMap(){ //Constructor    
+GameMap::GameMap(){ //Constructor
+    gameOver = false;    
     //Nos aseguramos al iniciar el programa que el puntero esté vacio para que no se rompa el programa
     PlayerCell = NULL;
     //cargamos el mapa desde el archivo map.txt llamando a la función correspondiente en el constructor
@@ -13,6 +14,15 @@ GameMap::GameMap(){ //Constructor
 /*mapCell::~MapCell(){
 
 }*/
+
+/*Definición de los getters y setters */
+bool GameMap::getGameOver(){
+    return gameOver;
+}
+
+void GameMap::setGameOver(bool playerGameOver){
+    gameOver = playerGameOver;
+}
 
 /*Definición del método DrawMap para dibujar el mapa */
 void GameMap::DrawMap(){
@@ -45,12 +55,20 @@ bool GameMap::SetPlayerCell(int playerX, int playerY){
         //No dejamos que se mueva el jugador
         return false;
     } else {
-       //Comprobamos si la celda está vacía o no para resetearla y repintar el mapa
-        if (PlayerCell != NULL){
-            PlayerCell->id = '0';
+        //Comprobamos si es un cofre, un enemigo u otra cosa que podremos ir añadiendo a posteriori.
+        if(cells[playerY][playerX].id == '4' or cells[playerY][playerX].id == '$'){
+            setGameOver(true);
+            DrawVictory();
+            return true;
+        } else {
+            //Comprobamos si la celda está vacía o no para resetearla y repintar el mapa
+            if (PlayerCell != NULL){
+                PlayerCell->id = '0';
+            }
+            PlayerCell = &cells[playerY][playerX]; //Vamos a la dirección de memoria de la posición de la celda para tomar su valor.
+            PlayerCell->id = 'H';
         }
-        PlayerCell = &cells[playerY][playerX]; //Vamos a la dirección de memoria de la posición de la celda para tomar su valor.
-        PlayerCell->id = 'H';
+       
         return true;
     }   
 }
@@ -96,7 +114,7 @@ void GameMap::DrawVictory(){
         }
         
         //Esperamos hasta que el usuario pulse una tecla o enter.
-        std::cin >> line;
+        //std::cin >> line;
 
     } else {
         std::cout << "ERROR FATAL: ARCHIVO DE VICTORIA NO HA PODIDO SER CARGADO. ¿EXISTE?" << std::endl;

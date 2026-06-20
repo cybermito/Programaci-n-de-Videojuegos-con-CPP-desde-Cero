@@ -26,7 +26,7 @@ indicar como se van a usar.
 #include "include/GameMap.hpp" //Clase generadora de mapas
 
 int main(){
-    bool isGameOver = false;
+    //bool isGameOver = false;
     GameMap map; //Creamos el objeto mapa
     Player hero; //Creamos el objeto jugador
 
@@ -35,7 +35,7 @@ int main(){
 
     //std::cout << "¡Comienza el juego!" << std::endl;
     /* Creamos el game loop */
-    while(!isGameOver){
+    while(!map.getGameOver()){
         //Aquí va todo el bucle del juego
 
         /* Para que no se estén viendo la pantalla de inicio y una lista interminable de mapas,
@@ -47,8 +47,14 @@ int main(){
         std::cout << "Para moverte por el mapa usa las teclas w, a, s, d más intro," << std::endl;
         //Tomamos la posición del jugador
         if(map.SetPlayerCell(hero.getPlayerX(), hero.getPlayerY())){
-            //Dibujamos el mapa
-            map.DrawMap();
+            if(!map.getGameOver()){ //Comprobamos si ha finalizado el juego para que no pinte el mapa
+                //seguidamente después de salir la pantalla de fin de juego.
+                //Dibujamos el mapa
+                map.DrawMap();
+            } else {
+                std::cout << "Pulsa una tecla + enter para cerrar el juego" << std::endl;
+            }
+            
         } else {
             //Reseteamos la posición del jugador
             hero.resetToSafePosition();

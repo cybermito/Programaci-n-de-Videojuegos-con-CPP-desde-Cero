@@ -45,7 +45,6 @@ void Player::setPlayerLastY(int playerLastPosY){
     lastY = playerLastPosY;
 }
 
-
 void Player::callInput(){
     /* Comentamos esta línea ya que era por motivos de pruebas.
     std::cout << "LLamada a la función callInput()"<< std::endl;

@@ -12,6 +12,7 @@ class Player
         int x, y; //Coordenadas nuevas
         int lastX, lastY; //Coordenadas anteriores
         
+        
     public:
         Player(); //Constructor
         //virtual ~Player(); //Destructor, lo comentamos temporalmente.
@@ -21,12 +22,14 @@ class Player
         int getPlayerY();
         int getPlayerLastX();
         int getPlayerLastY();
+        
         /*
         void setPlayerX(int posX);        
         void setPlayerY(int posY);
         */
         void setPlayerLastX(int lastPosX);
         void setPlayerLastY(int lastPosY);
+        
 
         //Método para la detección de las pulsaciones de las teclas y el movimiento del jugador
         void callInput();
