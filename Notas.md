@@ -2219,9 +2219,19 @@ Cuando _map.getGameOver()_ nos devuelva true debería salirse del bucle y finali
 
 _*Resuelto:*_ Actualmente está teniendo un pequeño bug y es que cuando sale la pantalla **VICTORY** y pulsamos una tecla, nos vuelve a salir el mapa y hasta que no pulsamos un par de veces la tecla no se sale del juego.
 
-### Programación Orientada a Objetos en Videojuegos Básicos
-
 ### Creación de Enemigos y Laberintos en C++ avanzado
+
+Reto: Crear enemigos y nuevos niveles para hacer más completo el juego.
+
+- Modificar el método de carga de mapas y pantallas, creando un solo método al que se le pase el archivo y lo abra.
+
+- Crear un enemigo que se mueva de forma autónoma por el mapa, siguiendo las mismas reglas que el jugados con respecto a los muros.
+
+- Si el enemigo atrapa al jugador quita una vida (habrá 3) y cuando le haya quitado todas finaliza la partida
+
+- Crear dos o tres niveles (mapas diferentes)
+
+- Cuando el jugador pase todos los niveles, termina el juego con la pantalla Victory.
 
 ## Otras notas
 
