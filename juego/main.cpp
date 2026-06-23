@@ -20,26 +20,28 @@ indicar como se van a usar.
 
 #include <iostream>
 #include "include/Player.hpp" //Incluimos la librería de cabecera donde definimos
-//nuestras propias clases. Hay que indicar la ruta completa del archivo si no está
-//en el mismo nivel que main.cpp
+// nuestras propias clases. Hay que indicar la ruta completa del archivo si no está
+// en el mismo nivel que main.cpp
 #include "include/MapCell.hpp" //Para el control de las celdas del mapa
 #include "include/GameMap.hpp" //Clase generadora de mapas
 
-int main(){
-    //bool isGameOver = false;
-    GameMap map; //Creamos el objeto mapa
-    Player hero; //Creamos el objeto jugador
+int main()
+{
+    // bool isGameOver = false;
+    GameMap map; // Creamos el objeto mapa
+    Player hero; // Creamos el objeto jugador
 
-    //Dibujamos la intro
+    // Dibujamos la intro
     map.DrawScreen("intro.txt");
-    //Instrucciones del juego
+    // Instrucciones del juego
     std::cout << "Para moverte por el mapa usa las teclas w, a, s, d más intro," << std::endl;
     hero.callInput();
 
-    //std::cout << "¡Comienza el juego!" << std::endl;
+    // std::cout << "¡Comienza el juego!" << std::endl;
     /* Creamos el game loop */
-    while(!map.getGameOver()){
-        //Aquí va todo el bucle del juego
+    while (!map.getGameOver())
+    {
+        // Aquí va todo el bucle del juego
 
         /* Para que no se estén viendo la pantalla de inicio y una lista interminable de mapas,
         se puede crear una instrucción que compruebe el sistema operativo que tienes y posteriormente
@@ -47,25 +49,30 @@ int main(){
         "cls"
         */
         system("clear");
-        
-        //Tomamos la posición del jugador
-        if(map.SetPlayerCell(hero.getPlayerX(), hero.getPlayerY())){
-            if(!map.getGameOver()){ //Comprobamos si ha finalizado el juego para que no pinte el mapa
-                //seguidamente después de salir la pantalla de fin de juego.
-                //Dibujamos el mapa
+
+        // Tomamos la posición del jugador
+        if (map.SetPlayerCell(hero.getPlayerX(), hero.getPlayerY()))
+        {
+            if (!map.getGameOver())
+            { // Comprobamos si ha finalizado el juego para que no pinte el mapa
+                // seguidamente después de salir la pantalla de fin de juego.
+                // Dibujamos el mapa
                 map.DrawMap();
-            } else {
+            }
+            else
+            {
                 std::cout << "Pulsa una tecla + enter para cerrar el juego" << std::endl;
             }
-            
-        } else {
-            //Reseteamos la posición del jugador
+        }
+        else
+        {
+            // Reseteamos la posición del jugador
             hero.resetToSafePosition();
-            //Dibujamos el mapa
+            // Dibujamos el mapa
             map.DrawMap();
         }
         hero.callInput();
     }
 
     return 0;
-} 
+}

@@ -2223,7 +2223,7 @@ _*Resuelto:*_ Actualmente está teniendo un pequeño bug y es que cuando sale la
 
 Reto: Crear enemigos y nuevos niveles para hacer más completo el juego.
 
-- Modificar el método de carga de mapas y pantallas, creando un solo método al que se le pase el archivo y lo abra.
+- Modificar el método de carga de mapas y pantallas, creando un solo método al que se le pase el archivo y lo abra. (Terminado)
 
 - Crear un enemigo que se mueva de forma autónoma por el mapa, siguiendo las mismas reglas que el jugados con respecto a los muros.
 
