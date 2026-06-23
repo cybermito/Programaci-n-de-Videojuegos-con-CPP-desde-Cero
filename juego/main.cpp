@@ -31,7 +31,10 @@ int main(){
     Player hero; //Creamos el objeto jugador
 
     //Dibujamos la intro
-    map.DrawIntro();
+    map.DrawScreen("intro.txt");
+    //Instrucciones del juego
+    std::cout << "Para moverte por el mapa usa las teclas w, a, s, d más intro," << std::endl;
+    hero.callInput();
 
     //std::cout << "¡Comienza el juego!" << std::endl;
     /* Creamos el game loop */
@@ -44,7 +47,7 @@ int main(){
         "cls"
         */
         system("clear");
-        std::cout << "Para moverte por el mapa usa las teclas w, a, s, d más intro," << std::endl;
+        
         //Tomamos la posición del jugador
         if(map.SetPlayerCell(hero.getPlayerX(), hero.getPlayerY())){
             if(!map.getGameOver()){ //Comprobamos si ha finalizado el juego para que no pinte el mapa

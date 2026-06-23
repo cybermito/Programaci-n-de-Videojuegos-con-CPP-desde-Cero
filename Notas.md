@@ -2233,6 +2233,14 @@ Reto: Crear enemigos y nuevos niveles para hacer más completo el juego.
 
 - Cuando el jugador pase todos los niveles, termina el juego con la pantalla Victory.
 
+#### Fusión métodos carga intro y victory en un solo método
+
+He creado un solo método para cargar uno u otro archivo para la intro y la victoria. El método lo he creado en la clase _GameMap_ y se llama _DrawScreen("pantalla")_, a dicho método le pasamos la ruta del archivo **.txt** que queremos cargar como pantalla de presentación y de este modo, con un solo método podemos usarlo en distintas partes del programa. Los métodos _DrawIntro()_ y _DrawVictory()_ los he comentado para que se viera como se hizo al inicio.
+
+#### Método LoadMapfromFile
+
+La modificación en este método es igual a la realizada en los métodos anteriores, se le ha añadido como parámetro la entrada del nombre del archivo a cargar, en este caso, el nombre del mapa/nivel.
+
 ## Otras notas
 
 ### Archivos de encabezado y código fuente en C++

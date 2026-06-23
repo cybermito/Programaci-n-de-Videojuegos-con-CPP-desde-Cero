@@ -8,7 +8,7 @@ GameMap::GameMap(){ //Constructor
     //Nos aseguramos al iniciar el programa que el puntero esté vacio para que no se rompa el programa
     PlayerCell = NULL;
     //cargamos el mapa desde el archivo map.txt llamando a la función correspondiente en el constructor
-    LoadMapFromFile();
+    LoadMapFromFile("map.txt");
 }
 
 /*mapCell::~MapCell(){
@@ -58,7 +58,7 @@ bool GameMap::SetPlayerCell(int playerX, int playerY){
         //Comprobamos si es un cofre, un enemigo u otra cosa que podremos ir añadiendo a posteriori.
         if(cells[playerY][playerX].id == '4' or cells[playerY][playerX].id == '$'){
             setGameOver(true);
-            DrawVictory();
+            DrawScreen("victory.txt");
             return true;
         } else {
             //Comprobamos si la celda está vacía o no para resetearla y repintar el mapa
@@ -73,58 +73,72 @@ bool GameMap::SetPlayerCell(int playerX, int playerY){
     }   
 }
 
-void GameMap::DrawIntro(){
-    std::string line; //Guardaremos cada línea del archivo leído.
-    std::ifstream myIntro("intros/intro.txt"); //Creamos el objeto myIntro que guardará el contenido del archivo en memoria (input flow stream - Entrada flujo de datos.).
+// void GameMap::DrawIntro(){
+//     std::string line; //Guardaremos cada línea del archivo leído.
+//     std::ifstream myIntro("intros/intro.txt"); //Creamos el objeto myIntro que guardará el contenido del archivo en memoria (input flow stream - Entrada flujo de datos.).
 
-    /*Comprobamos si el el archio del mapa está abierto. Nota: la primera vez que ejecutamos el juego
-    cómo el map.txt no existe nos dará error, así que sería conveniente crearlo a mano o crearlo desde el código. Inicialmente lo voy a generar a mano, pero lo ideal es crear un generador de laberintos y crear el archivo con este.
-    */
-    if (myIntro.is_open()){
+//     /*Comprobamos si el el archio del mapa está abierto. Nota: la primera vez que ejecutamos el juego
+//     cómo el map.txt no existe nos dará error, así que sería conveniente crearlo a mano o crearlo desde el código. Inicialmente lo voy a generar a mano, pero lo ideal es crear un generador de laberintos y crear el archivo con este.
+//     */
+//     if (myIntro.is_open()){
         
-        while (getline(myIntro, line)){
-            // std::cout << line << std::endl; //Sirvió para comprobar la lectura y dibujado del mapa.
-            // Incluimos el mapa en el juego.
+//         while (getline(myIntro, line)){
+//             // std::cout << line << std::endl; //Sirvió para comprobar la lectura y dibujado del mapa.
+//             // Incluimos el mapa en el juego.
 
+//             std::cout << line << std::endl;
+//         }
+        
+//         //Esperamos hasta que el usuario pulse una tecla o enter.
+//         std::cin >> line;
+
+//     } else {
+//         std::cout << "ERROR FATAL: ARCHIVO DE LA INTRO NO HA PODIDO SER CARGADO. ¿EXISTE?" << std::endl;
+//     }
+// }
+
+// void GameMap::DrawVictory(){
+//     std::string line; //Guardaremos cada línea del archivo leído.
+//     std::ifstream myIntro("intros/victory.txt"); //Creamos el objeto myIntro que guardará el contenido del archivo en memoria (input flow stream - Entrada flujo de datos.).
+
+//     /*Comprobamos si el el archio del mapa está abierto. Nota: la primera vez que ejecutamos el juego
+//     cómo el map.txt no existe nos dará error, así que sería conveniente crearlo a mano o crearlo desde el código. Inicialmente lo voy a generar a mano, pero lo ideal es crear un generador de laberintos y crear el archivo con este.
+//     */
+//     if (myIntro.is_open()){
+        
+//         while (getline(myIntro, line)){
+//             // std::cout << line << std::endl; //Sirvió para comprobar la lectura y dibujado del mapa.
+//             // Incluimos el mapa en el juego.
+
+//             std::cout << line << std::endl;
+//         }
+        
+//         //Esperamos hasta que el usuario pulse una tecla o enter.
+//         //std::cin >> line;
+
+//     } else {
+//         std::cout << "ERROR FATAL: ARCHIVO DE VICTORIA NO HA PODIDO SER CARGADO. ¿EXISTE?" << std::endl;
+//     }
+// }
+
+void GameMap::DrawScreen(std::string filename){
+    std::string line;
+    std::ifstream screen("intros/" + filename);
+
+    if(screen.is_open()){
+        while (getline(screen, line)){
             std::cout << line << std::endl;
         }
         
-        //Esperamos hasta que el usuario pulse una tecla o enter.
-        std::cin >> line;
-
     } else {
-        std::cout << "ERROR FATAL: ARCHIVO DE LA INTRO NO HA PODIDO SER CARGADO. ¿EXISTE?" << std::endl;
+        std::cout << "ERROR FATAL: EL ARCHIVO " + filename + " NO SE HA PODIDO CARGAR. ¿EXISTE?" << std::endl;
     }
 }
 
-void GameMap::DrawVictory(){
-    std::string line; //Guardaremos cada línea del archivo leído.
-    std::ifstream myIntro("intros/victory.txt"); //Creamos el objeto myIntro que guardará el contenido del archivo en memoria (input flow stream - Entrada flujo de datos.).
-
-    /*Comprobamos si el el archio del mapa está abierto. Nota: la primera vez que ejecutamos el juego
-    cómo el map.txt no existe nos dará error, así que sería conveniente crearlo a mano o crearlo desde el código. Inicialmente lo voy a generar a mano, pero lo ideal es crear un generador de laberintos y crear el archivo con este.
-    */
-    if (myIntro.is_open()){
-        
-        while (getline(myIntro, line)){
-            // std::cout << line << std::endl; //Sirvió para comprobar la lectura y dibujado del mapa.
-            // Incluimos el mapa en el juego.
-
-            std::cout << line << std::endl;
-        }
-        
-        //Esperamos hasta que el usuario pulse una tecla o enter.
-        //std::cin >> line;
-
-    } else {
-        std::cout << "ERROR FATAL: ARCHIVO DE VICTORIA NO HA PODIDO SER CARGADO. ¿EXISTE?" << std::endl;
-    }
-}
-
-void GameMap::LoadMapFromFile(){
+void GameMap::LoadMapFromFile(std::string mapName){
     std::string line; //Guardaremos cada línea del archivo leído.
     int row = 0; //Variable para saber en que fila del mapa estamos.
-    std::ifstream myMap("mapas/map.txt"); //Creamos el objeto myMap que guardará el contenido del archivo en memoria (input flow stream - Entrada flujo de datos.).
+    std::ifstream myMap("mapas/" + mapName); //Creamos el objeto myMap que guardará el contenido del archivo en memoria (input flow stream - Entrada flujo de datos.).
 
     /*Comprobamos si el el archio del mapa está abierto. Nota: la primera vez que ejecutamos el juego
     cómo el map.txt no existe nos dará error, así que sería conveniente crearlo a mano o crearlo desde el código. Inicialmente lo voy a generar a mano, pero lo ideal es crear un generador de laberintos y crear el archivo con este.
